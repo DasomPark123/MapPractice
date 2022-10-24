@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion 33
     buildToolsVersion "30.0.3"
@@ -15,6 +18,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [NAVER_MAP_API_KEY: 'naver_map_client_id']
     }
 
     buildTypes {
@@ -31,7 +36,7 @@ android {
         jvmTarget = '1.8'
     }
     dataBinding {
-        enable = true
+        enabled = true
     }
 }
 
