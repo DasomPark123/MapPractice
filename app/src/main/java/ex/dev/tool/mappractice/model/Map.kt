@@ -1,5 +1,8 @@
 package ex.dev.tool.mappractice.model
 
-abstract class Map {
-
+interface Map {
+    fun setZoom()
+    fun setInitialLocation()
+    fun moveToCurrentLocation()
+    fun setMarker()
 }

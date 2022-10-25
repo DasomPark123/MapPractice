@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import ex.dev.tool.mappractice.databinding.FragmentMapBinding
 
 class MapFragment : Fragment() {
 
@@ -13,6 +15,7 @@ class MapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+        val binding : FragmentMapBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false)
+        return binding.root
     }
 }
