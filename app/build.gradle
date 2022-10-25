@@ -7,6 +7,7 @@ plugins {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def naver_map_client_id = properties.getProperty('naver_map_client_id')
+def google_map_client_id = properties.getProperty('google_map_client_id')
 
 android {
     compileSdkVersion 33
@@ -21,7 +22,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        manifestPlaceholders = [NAVER_MAP_API_KEY: naver_map_client_id]
+        manifestPlaceholders = [NAVER_MAP_API_KEY: naver_map_client_id, GOOGLE_MAP_API_KEY: google_map_client_id]
     }
 
     buildTypes {
@@ -58,4 +59,7 @@ dependencies {
     kapt 'com.android.databinding:compiler:7.3.1'
     // 네이버 지도 SDK
     implementation 'com.naver.maps:map-sdk:3.15.0'
+    //구글 지도 SDK
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.0'
 }
