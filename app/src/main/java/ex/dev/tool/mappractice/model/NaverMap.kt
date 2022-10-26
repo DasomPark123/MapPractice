@@ -4,38 +4,38 @@ import android.os.Bundle
 import android.view.View
 import ex.dev.tool.mappractice.databinding.FragmentMapBinding
 
-class GoogleMap(val binding : FragmentMapBinding) : Map {
+class NaverMap(val binding : FragmentMapBinding) : Map {
 
     init {
-        binding.googleMapView.visibility = View.VISIBLE
+        binding.naverMapView.visibility = View.VISIBLE
     }
 
     override fun onCreate(saveInstanceState: Bundle?) {
-        binding.googleMapView.onCreate(saveInstanceState)
+        binding.naverMapView.onCreate(saveInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        binding.googleMapView.onSaveInstanceState(outState)
+        binding.naverMapView.onSaveInstanceState(outState)
     }
 
     override fun onResume() {
-        binding.googleMapView.onResume()
+        binding.naverMapView.onResume()
     }
 
     override fun onPause() {
-        binding.googleMapView.onPause()
+        binding.naverMapView.onPause()
     }
 
     override fun onDestroy() {
-        binding.googleMapView.onDestroy()
+        binding.naverMapView.onDestroy()
     }
 
     override fun onLowMemory() {
-        binding.googleMapView.onLowMemory()
+        binding.naverMapView.onLowMemory()
     }
 
     override fun setZoom() {
-        TODO("Not yet implemented")
+
     }
 
     override fun setInitialLocation() {

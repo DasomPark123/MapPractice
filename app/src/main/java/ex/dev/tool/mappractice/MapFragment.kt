@@ -5,63 +5,59 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.naver.maps.geometry.LatLng
 import ex.dev.tool.mappractice.databinding.FragmentMapBinding
+import ex.dev.tool.mappractice.model.NaverMap
 
-class MapFragment : Fragment(), OnMapReadyCallback{
+class MapFragment : Fragment() {
 
-    private lateinit var binding : FragmentMapBinding
+   private lateinit var map : ex.dev.tool.mappractice.model.Map
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+   private lateinit var binding : FragmentMapBinding
 
-    }
-
-    //각 mapview 생명주기 호출
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false)
-        binding.googleMapView.onCreate(savedInstanceState)
-        binding.googleMapView.getMapAsync(this)
+        map = NaverMap(binding)
+        map.onCreate(savedInstanceState)
+        initView()
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.googleMapView.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        binding.googleMapView.onPause()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        binding.googleMapView.onLowMemory()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
+    fun initView() {
+        binding.btnCurrentLocation.setOnClickListener { map.moveToCurrentLocation() }
+        binding.btnMarker.setOnClickListener { map.setMarker() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        binding.googleMapView.onSaveInstanceState(outState)
+        map.onSaveInstanceState(outState)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding.googleMapView.onDestroy()
+    override fun onResume() {
+        super.onResume()
+        map.onResume()
     }
 
-    override fun onMapReady(p0: GoogleMap) {
-        val seoul = LatLng(37.56, 126.97 )
+    override fun onPause() {
+        super.onPause()
+        map.onPause()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        map.onLowMemory()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        map.onDestroy()
     }
 }
