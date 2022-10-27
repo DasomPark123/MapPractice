@@ -5,14 +5,26 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/fragment_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="ex.dev.tool.mappractice.MapFragment"/>
+        <Button
+            android:id="@+id/btn_naver_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/naver_map"/>
+
+        <Button
+            android:id="@+id/btn_google_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_naver_map"
+            android:text="@string/google_map"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
