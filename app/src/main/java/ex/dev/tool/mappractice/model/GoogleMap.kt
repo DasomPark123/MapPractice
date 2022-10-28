@@ -2,9 +2,15 @@ package ex.dev.tool.mappractice.model
 
 import android.os.Bundle
 import android.view.View
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import ex.dev.tool.mappractice.databinding.FragmentMapBinding
 
-class GoogleMap(val binding : FragmentMapBinding) : Map {
+class GoogleMap(val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
+
+    private lateinit var googleMap : GoogleMap
 
     init {
         binding.googleMapView.visibility = View.VISIBLE
@@ -47,6 +53,17 @@ class GoogleMap(val binding : FragmentMapBinding) : Map {
     }
 
     override fun setMarker() {
-        TODO("Not yet implemented")
+        val latLng = LatLng(37.56, 126.97)
+        val markerOption = MarkerOptions()
+        markerOption.apply {
+            position(latLng)
+            title("Seoul")
+            snippet("Capital of Korea")
+        }
+        googleMap.addMarker(markerOption)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        this.googleMap = googleMap
     }
 }
