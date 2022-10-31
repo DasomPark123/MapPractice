@@ -14,6 +14,7 @@ class GoogleMap(val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
 
     init {
         binding.googleMapView.visibility = View.VISIBLE
+        binding.googleMapView.getMapAsync(this)
     }
 
     override fun onCreate(saveInstanceState: Bundle?) {

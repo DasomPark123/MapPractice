@@ -39,13 +39,15 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val region = arguments?.getInt(MapActivity.EXTRA_REGION)
         Log.d(TAG, "region : $region")
-        map = when(region) {
-            KOREA ->  { NaverMap(binding) }
-            JAPAN -> { GoogleMap(binding) }
-            else -> { GoogleMap(binding) }
-        }
+        map = createMap(region)
         map.onCreate(savedInstanceState)
         initView()
+    }
+
+    private fun createMap(region : Int?) = when(region) {
+        KOREA ->  { NaverMap(binding) }
+        JAPAN -> { GoogleMap(binding) }
+        else -> { GoogleMap(binding) }
     }
 
     private fun initView() {

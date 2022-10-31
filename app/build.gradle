@@ -1,3 +1,10 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -40,7 +47,6 @@ android {
     }
     buildFeatures {
         dataBinding true
-        viewBinding true
     }
 }
 
@@ -62,4 +68,6 @@ dependencies {
     //구글 지도 SDK
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.0'
+    //Permission
+    implementation 'io.github.ParkSangGwon:tedpermission-coroutine:3.3.0'
 }

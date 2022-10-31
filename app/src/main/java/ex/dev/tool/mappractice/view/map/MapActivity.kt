@@ -9,7 +9,7 @@ import ex.dev.tool.mappractice.databinding.ActivityMapBinding
 
 class MapActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMapBinding
+    private lateinit var binding: ActivityMapBinding
 
     companion object {
         val TAG = MapActivity::class.simpleName
@@ -19,7 +19,6 @@ class MapActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_map)
-
         val region = intent.extras?.getInt(EXTRA_REGION)
         Log.d(TAG, "region : $region")
 
