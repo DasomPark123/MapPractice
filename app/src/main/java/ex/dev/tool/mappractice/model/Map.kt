@@ -9,9 +9,9 @@ interface Map {
     fun onPause()
     fun onDestroy()
     fun onLowMemory()
+    fun getMapAsync()
     fun setZoom()
     fun setInitialLocation()
     fun moveLocation()
-    fun setLocationTrackingModel(requestCode : Int, permissions : Array<out String>, grantResults : IntArray)
     fun setMarker()
 }

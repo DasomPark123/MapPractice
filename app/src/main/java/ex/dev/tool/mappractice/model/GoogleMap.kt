@@ -8,13 +8,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import ex.dev.tool.mappractice.databinding.FragmentMapBinding
 
-class GoogleMap(val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
+class GoogleMap(private val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
 
     private lateinit var googleMap : GoogleMap
 
     init {
         binding.googleMapView.visibility = View.VISIBLE
-        binding.googleMapView.getMapAsync(this)
     }
 
     override fun onCreate(saveInstanceState: Bundle?) {
@@ -41,6 +40,10 @@ class GoogleMap(val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
         binding.googleMapView.onLowMemory()
     }
 
+    override fun getMapAsync() {
+        binding.googleMapView.getMapAsync(this)
+    }
+
     override fun setZoom() {
         TODO("Not yet implemented")
     }
@@ -50,14 +53,6 @@ class GoogleMap(val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
     }
 
     override fun moveLocation() {
-        TODO("Not yet implemented")
-    }
-
-    override fun setLocationTrackingModel(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
         TODO("Not yet implemented")
     }
 

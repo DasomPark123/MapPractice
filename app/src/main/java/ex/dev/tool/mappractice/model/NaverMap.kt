@@ -25,7 +25,6 @@ class NaverMap(private val fragment : Fragment, private val binding : FragmentMa
 
     init {
         binding.naverMapView.visibility = View.VISIBLE
-        binding.naverMapView.getMapAsync(this)
     }
 
     override fun onCreate(saveInstanceState: Bundle?) {
@@ -52,6 +51,10 @@ class NaverMap(private val fragment : Fragment, private val binding : FragmentMa
         binding.naverMapView.onLowMemory()
     }
 
+    override fun getMapAsync() {
+        binding.naverMapView.getMapAsync(this)
+    }
+
     override fun setZoom() {
 
     }
@@ -62,23 +65,6 @@ class NaverMap(private val fragment : Fragment, private val binding : FragmentMa
 
     override fun moveLocation() {
         TODO("Not yet implemented")
-    }
-
-    override fun setLocationTrackingModel(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        if(locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
-            Log.d(TAG,"locationSource : ${locationSource.isActivated}")
-            if(!locationSource.isActivated) {
-                Log.d(TAG,"none")
-                naverMap.locationTrackingMode = LocationTrackingMode.None
-            } else {
-                Log.d(TAG,"follow")
-                naverMap.locationTrackingMode = LocationTrackingMode.Follow
-            }
-        }
     }
 
     override fun setMarker() {
@@ -95,10 +81,13 @@ class NaverMap(private val fragment : Fragment, private val binding : FragmentMa
     override fun onMapReady(naverMap : com.naver.maps.map.NaverMap) {
         this.naverMap = naverMap
 
+        /* 현재위치 버튼 활성화 */
         val uiSetting = naverMap.uiSettings
         uiSetting.isLocationButtonEnabled = true
 
-        locationSource = FusedLocationSource(fragment.activity as Activity, ex.dev.tool.mappractice.view.map.MapFragment.LOCATION_PERMISSION_REQUEST_CODE)
+        /* 위치 tracker 설정 */
+        locationSource = FusedLocationSource(fragment, ex.dev.tool.mappractice.view.map.MapFragment.LOCATION_PERMISSION_REQUEST_CODE)
         naverMap.locationSource = locationSource
+        naverMap.locationTrackingMode = LocationTrackingMode.Follow
     }
 }
