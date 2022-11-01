@@ -11,6 +11,7 @@ interface Map {
     fun onLowMemory()
     fun setZoom()
     fun setInitialLocation()
-    fun moveToCurrentLocation()
+    fun moveLocation()
+    fun setLocationTrackingModel(requestCode : Int, permissions : Array<out String>, grantResults : IntArray)
     fun setMarker()
 }

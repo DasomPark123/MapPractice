@@ -49,7 +49,15 @@ class GoogleMap(val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
         TODO("Not yet implemented")
     }
 
-    override fun moveToCurrentLocation() {
+    override fun moveLocation() {
+        TODO("Not yet implemented")
+    }
+
+    override fun setLocationTrackingModel(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         TODO("Not yet implemented")
     }
 

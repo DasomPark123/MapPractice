@@ -1,15 +1,27 @@
 package ex.dev.tool.mappractice.model
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import com.naver.maps.map.LocationTrackingMode
+import com.naver.maps.map.MapFragment
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import ex.dev.tool.mappractice.databinding.FragmentMapBinding
 
-class NaverMap(val binding : FragmentMapBinding) : Map, com.naver.maps.map.OnMapReadyCallback {
+class NaverMap(private val fragment : Fragment, private val binding : FragmentMapBinding) : Map, com.naver.maps.map.OnMapReadyCallback {
 
     private lateinit var naverMap : com.naver.maps.map.NaverMap
+    private lateinit var locationSource: FusedLocationSource
+
+    companion object {
+        val TAG = com.naver.maps.map.NaverMap::class.simpleName
+    }
 
     init {
         binding.naverMapView.visibility = View.VISIBLE
@@ -48,8 +60,25 @@ class NaverMap(val binding : FragmentMapBinding) : Map, com.naver.maps.map.OnMap
         TODO("Not yet implemented")
     }
 
-    override fun moveToCurrentLocation() {
+    override fun moveLocation() {
         TODO("Not yet implemented")
+    }
+
+    override fun setLocationTrackingModel(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if(locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+            Log.d(TAG,"locationSource : ${locationSource.isActivated}")
+            if(!locationSource.isActivated) {
+                Log.d(TAG,"none")
+                naverMap.locationTrackingMode = LocationTrackingMode.None
+            } else {
+                Log.d(TAG,"follow")
+                naverMap.locationTrackingMode = LocationTrackingMode.Follow
+            }
+        }
     }
 
     override fun setMarker() {
@@ -61,10 +90,15 @@ class NaverMap(val binding : FragmentMapBinding) : Map, com.naver.maps.map.OnMap
             icon = MarkerIcons.BLACK
             iconTintColor = Color.BLACK
         }
-
     }
 
     override fun onMapReady(naverMap : com.naver.maps.map.NaverMap) {
         this.naverMap = naverMap
+
+        val uiSetting = naverMap.uiSettings
+        uiSetting.isLocationButtonEnabled = true
+
+        locationSource = FusedLocationSource(fragment.activity as Activity, ex.dev.tool.mappractice.view.map.MapFragment.LOCATION_PERMISSION_REQUEST_CODE)
+        naverMap.locationSource = locationSource
     }
 }
