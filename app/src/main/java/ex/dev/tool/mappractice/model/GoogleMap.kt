@@ -1,16 +1,26 @@
 package ex.dev.tool.mappractice.model
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.UiSettings
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import ex.dev.tool.mappractice.databinding.FragmentMapBinding
+import ex.dev.tool.mappractice.utils.hasPermissions
 
-class GoogleMap(private val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
+class GoogleMap(private val fragment : Fragment, private val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
 
     private lateinit var googleMap : GoogleMap
+
+    private val markerOption = MarkerOptions()
 
     init {
         binding.googleMapView.visibility = View.VISIBLE
@@ -44,30 +54,41 @@ class GoogleMap(private val binding : FragmentMapBinding) : Map, OnMapReadyCallb
         binding.googleMapView.getMapAsync(this)
     }
 
-    override fun setZoom() {
-        TODO("Not yet implemented")
+    override fun setZoom(maxZoom: Double, minZoom: Double) {
+        googleMap.setMaxZoomPreference(maxZoom.toFloat())
+        googleMap.setMinZoomPreference(maxZoom.toFloat())
     }
 
-    override fun setInitialLocation() {
-        TODO("Not yet implemented")
+    override fun moveLocation(latitude : Double, longitude : Double) {
+        val cameraUpdate = CameraUpdateFactory.newLatLng(LatLng(latitude, longitude))
+        googleMap.moveCamera(cameraUpdate)
     }
 
-    override fun moveLocation() {
-        TODO("Not yet implemented")
-    }
-
-    override fun setMarker() {
-        val latLng = LatLng(37.56, 126.97)
-        val markerOption = MarkerOptions()
+    override fun setMarker(latitude: Double, longitude: Double) {
+        val latLng = LatLng(latitude, longitude)
         markerOption.apply {
             position(latLng)
             title("Seoul")
             snippet("Capital of Korea")
         }
         googleMap.addMarker(markerOption)
+        moveLocation(37.56, 126.97)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
+
+        val uiSetting = googleMap.uiSettings
+        uiSetting.isMyLocationButtonEnabled = true
+
+        if(ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==  PackageManager.PERMISSION_GRANTED) {
+            googleMap.isMyLocationEnabled = true // It has to check location permissions explicit
+        }
+
+        googleMap.setOnCameraMoveListener {
+            val cameraPosition = googleMap.cameraPosition.target
+            setMarker(cameraPosition.latitude, cameraPosition.longitude)
+        }
     }
 }

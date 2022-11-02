@@ -10,8 +10,7 @@ interface Map {
     fun onDestroy()
     fun onLowMemory()
     fun getMapAsync()
-    fun setZoom()
-    fun setInitialLocation()
-    fun moveLocation()
-    fun setMarker()
+    fun setZoom(maxZoom : Double, minZoom : Double)
+    fun moveLocation(latitude : Double, longitude : Double)
+    fun setMarker(latitude : Double, longitude : Double)
 }

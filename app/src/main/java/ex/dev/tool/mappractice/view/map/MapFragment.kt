@@ -1,22 +1,18 @@
 package ex.dev.tool.mappractice.view.map
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import ex.dev.tool.mappractice.R
 import ex.dev.tool.mappractice.databinding.FragmentMapBinding
 import ex.dev.tool.mappractice.model.GoogleMap
 import ex.dev.tool.mappractice.model.NaverMap
-import ex.dev.tool.mappractice.utils.JAPAN
-import ex.dev.tool.mappractice.utils.KOREA
+import ex.dev.tool.mappractice.utils.*
 
 class MapFragment : Fragment() {
 
@@ -29,16 +25,17 @@ class MapFragment : Fragment() {
         android.Manifest.permission.ACCESS_FINE_LOCATION
     )
 
-    private val multiPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
-        var isAllGranted = true
-        for(entry in map.entries) {
-            if(!entry.value) {
-                isAllGranted = false
-                break
+    private val multiPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
+            var isAllGranted = true
+            for (entry in map.entries) {
+                if (!entry.value) {
+                    isAllGranted = false
+                    break
+                }
             }
+            checkPermissionGranted(isAllGranted)
         }
-        checkPermissionGranted(isAllGranted)
-    }
 
     companion object {
         val TAG = MapFragment::class.simpleName
@@ -64,20 +61,21 @@ class MapFragment : Fragment() {
         initView()
     }
 
-    private fun checkPermission(): Boolean =
-        ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    private fun checkLocationPermission(): Boolean = requireActivity().hasPermissions(
+        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    )
 
     private fun requestPermissions() {
-        if (!checkPermission()) {
+        if (!checkLocationPermission()) {
             multiPermissionLauncher.launch(permissions)
         } else {
             map.getMapAsync()
         }
     }
 
-    private fun checkPermissionGranted(isAllGranted : Boolean) {
-        if(isAllGranted) {
+    private fun checkPermissionGranted(isAllGranted: Boolean) {
+        if (isAllGranted) {
             map.getMapAsync()
         } else {
             activity?.finish()
@@ -89,16 +87,16 @@ class MapFragment : Fragment() {
             NaverMap(this, binding)
         }
         JAPAN -> {
-            GoogleMap(binding)
+            GoogleMap(this, binding)
         }
         else -> {
-            GoogleMap(binding)
+            GoogleMap(this, binding)
         }
     }
 
     private fun initView() {
-        binding.btnCurrentLocation.setOnClickListener { map.moveLocation() }
-        binding.btnMarker.setOnClickListener { map.setMarker() }
+        binding.btnCurrentLocation.setOnClickListener { }
+        binding.btnMarker.setOnClickListener {  }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
