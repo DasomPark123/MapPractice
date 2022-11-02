@@ -9,17 +9,16 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.UiSettings
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import ex.dev.tool.mappractice.databinding.FragmentMapBinding
-import ex.dev.tool.mappractice.utils.hasPermissions
 
 class GoogleMap(private val fragment : Fragment, private val binding : FragmentMapBinding) : Map, OnMapReadyCallback {
 
     private lateinit var googleMap : GoogleMap
 
+    private var marker : Marker? = null
     private val markerOption = MarkerOptions()
 
     init {
@@ -65,14 +64,14 @@ class GoogleMap(private val fragment : Fragment, private val binding : FragmentM
     }
 
     override fun setMarker(latitude: Double, longitude: Double) {
+        marker?.let { it.remove() }
         val latLng = LatLng(latitude, longitude)
         markerOption.apply {
             position(latLng)
             title("Seoul")
             snippet("Capital of Korea")
         }
-        googleMap.addMarker(markerOption)
-        moveLocation(37.56, 126.97)
+        marker = googleMap.addMarker(markerOption)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -85,6 +84,8 @@ class GoogleMap(private val fragment : Fragment, private val binding : FragmentM
             && ContextCompat.checkSelfPermission(fragment.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==  PackageManager.PERMISSION_GRANTED) {
             googleMap.isMyLocationEnabled = true // It has to check location permissions explicit
         }
+
+        setZoom(18.0, 10.0)
 
         googleMap.setOnCameraMoveListener {
             val cameraPosition = googleMap.cameraPosition.target
